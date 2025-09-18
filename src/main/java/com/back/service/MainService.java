@@ -4,7 +4,6 @@ import com.back.dao.*;
 import com.back.dto.PartOrderDTO;
 import com.back.dto.RepairOrderDTO;
 import com.back.model.*;
-import com.back.view.Lists;
 import com.back.view.MainView;
 import com.back.view.ValidationMessages;
 import com.back.view.Inputs;
@@ -38,7 +37,7 @@ public class MainService {
             case 1 -> {
                 do {
                     machine = inputs.signMachine();
-                    validation = ValidateInputs.validateStr(machine.getName(), machine.getSection());
+                    validation = ValidateInputsAuxilier.validateStr(machine.getName(), machine.getSection());
 
                 }while(!validation);
 
@@ -48,7 +47,7 @@ public class MainService {
             case 2 -> {
                 do{
                     technician = inputs.signTechnician();
-                    validation = ValidateInputs.validateStr(technician.getName(), technician.getSpecialty());
+                    validation = ValidateInputsAuxilier.validateStr(technician.getName(), technician.getSpecialty());
 
                 }while(!validation);
 
@@ -58,8 +57,8 @@ public class MainService {
             case 3 -> {
                 do {
                     part = inputs.signPart();
-                    validStr = ValidateInputs.validateStr(part.getName());
-                    validDouble = ValidateInputs.validadeDouble(part.getStorage());
+                    validStr = ValidateInputsAuxilier.validateStr(part.getName());
+                    validDouble = ValidateInputsAuxilier.validadeDouble(part.getStorage());
 
                 }while(!validStr || !validDouble); // it was only the condition &&............
 
@@ -72,8 +71,8 @@ public class MainService {
 
                 do {
                     repairOrder = inputs.createRepairOrder(machines, technicians);
-                    validMach = ValidateInputs.validateMachineChoice(machines, repairOrder.getIdMachine());
-                    validTech = ValidateInputs.validateTechnicianChoice(technicians, repairOrder.getIdTechnician());
+                    validMach = ValidateInputsAuxilier.validateMachineChoice(machines, repairOrder.getIdMachine());
+                    validTech = ValidateInputsAuxilier.validateTechnicianChoice(technicians, repairOrder.getIdTechnician());
 
                 }while(!validMach || !validTech);
 
@@ -88,15 +87,15 @@ public class MainService {
 
                 do{
                     partOrder = inputs.createPartOrder(reps, parts);
-                    validRepair = ValidateInputs.validateRepairChoice(reps, partOrder.getIdOrder());
-                    validPart = ValidateInputs.validatePartChoice(parts, partOrder.getIdPart());
-                    validDouble = ValidateInputs.validadeDouble(partOrder.getAmount());
+                    validRepair = ValidateInputsAuxilier.validateRepairChoice(reps, partOrder.getIdOrder());
+                    validPart = ValidateInputsAuxilier.validatePartChoice(parts, partOrder.getIdPart());
+                    validDouble = ValidateInputsAuxilier.validadeDouble(partOrder.getAmount());
 
                     if(validRepair && validPart && validDouble) {
                         partOrders.add(partOrder);
                     }
 
-                    moreParts = ValidateInputs.validateMoreParts(inputs.addAnotherPart());
+                    moreParts = ValidateInputsAuxilier.validateMoreParts(inputs.addAnotherPart());
 
                 }while((!validRepair || !validPart || !validDouble) || moreParts);
 
@@ -106,7 +105,7 @@ public class MainService {
             case 6 -> {
                 List<PartOrderDTO> parts = partOrderDAO.pendentAndStorageParts();
                 int choice = inputs.startRepair(parts);
-                validStorage = ValidateInputs.validateStorage(parts, choice);
+                validStorage = ValidateInputsAuxilier.validateStorage(parts, choice);
 
                 if(validStorage != 0){
                     validPart = partDAO.updatePartStorage(validStorage, choice);

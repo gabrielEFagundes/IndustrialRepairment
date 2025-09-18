@@ -9,7 +9,7 @@ import com.back.view.ValidationMessages;
 
 import java.util.List;
 
-public class ValidateInputs {
+public class ValidateInputsAuxilier {
 
     public static boolean validateStr(String... input){
         for(String i : input){

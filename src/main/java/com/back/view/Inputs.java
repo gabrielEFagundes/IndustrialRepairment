@@ -5,7 +5,7 @@ import com.back.dto.RepairOrderDTO;
 import com.back.model.*;
 import com.back.model.enums.MachineStatus;
 import com.back.model.enums.RepairOrderStatus;
-import com.back.service.Parser;
+import com.back.service.ParserAuxilier;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -59,20 +59,20 @@ public class Inputs {
         MainView.printCaseNotWorking();
         scan.nextLine();
 
-        Lists.operatingMachines(machines);
+        ListsAuxilier.operatingMachines(machines);
 
         System.out.print("\nWhat machine would you like to choose?\n-> ");
         String machChoice = scan.nextLine();
 
-        Lists.allTechnicians(technicians);
+        ListsAuxilier.allTechnicians(technicians);
 
         System.out.print("\nWhich technician would you like to choose?\n-> ");
         String techChoice = scan.nextLine();
 
         Date solicitationDate = Date.valueOf(LocalDate.now());
 
-        return new RepairOrder(Parser.parseInput(machChoice),
-                Parser.parseInput(techChoice),
+        return new RepairOrder(ParserAuxilier.parseInput(machChoice),
+                ParserAuxilier.parseInput(techChoice),
                 solicitationDate,
                 RepairOrderStatus.PENDENT);
     }
@@ -81,20 +81,20 @@ public class Inputs {
         MainView.printCaseNotWorking();
         scan.nextLine();
 
-        Lists.pendentRepairOrders(reps);
+        ListsAuxilier.pendentRepairOrders(reps);
         System.out.print("\nWhich order ID would you like to choose?\n-> ");
         String orderChoice = scan.nextLine();
 
-        Lists.allParts(parts);
+        ListsAuxilier.allParts(parts);
         System.out.print("\nWhich part ID would you like to choose?\n-> ");
         String partChoice = scan.nextLine();
 
         System.out.print("\nHow many of those would you like?\n-> ");
         String amount = scan.nextLine();
 
-        return new PartOrder(Parser.parseInput(orderChoice),
-                Parser.parseInput(partChoice),
-                Parser.parseDouble(amount));
+        return new PartOrder(ParserAuxilier.parseInput(orderChoice),
+                ParserAuxilier.parseInput(partChoice),
+                ParserAuxilier.parseDouble(amount));
     }
 
     public Character addAnotherPart(){
@@ -109,7 +109,7 @@ public class Inputs {
         MainView.printCaseNotWorking();
         scan.nextLine();
 
-        Lists.pendentAndStorageParts(parts);
+        ListsAuxilier.pendentAndStorageParts(parts);
         System.out.print("\nWhich order would you like to execute?\n-> ");
         return scan.nextInt();
     }

@@ -1,6 +1,6 @@
 package com.back.service;
 
-public class Parser {
+public class ParserAuxilier {
 
     public static int parseInput(String input){
         try{

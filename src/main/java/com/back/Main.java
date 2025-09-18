@@ -1,7 +1,7 @@
 package com.back;
 
 import com.back.service.MainService;
-import com.back.service.Parser;
+import com.back.service.ParserAuxilier;
 import com.back.view.MainView;
 
 public class Main {
@@ -13,10 +13,9 @@ public class Main {
         while(true){
             String choice = view.mainMenu();
 
-            int numberedChoice = Parser.parseInput(choice);
+            int numberedChoice = ParserAuxilier.parseInput(choice);
 
             service.programMenu(numberedChoice);
         }
-
     }
 }

@@ -7,10 +7,9 @@ import com.back.model.Part;
 import com.back.model.Technician;
 import com.back.service.ForEachAuxilier;
 
-import java.nio.Buffer;
 import java.util.List;
 
-public class Lists {
+public class ListsAuxilier {
 
     public static void operatingMachines(List<Machine> machines){
         System.out.printf("\n%-10s | %-20s | %-30s\n", "ID", "Name", "Section");
