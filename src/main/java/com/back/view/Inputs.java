@@ -1,9 +1,8 @@
 package com.back.view;
 
-import com.back.model.Machine;
-import com.back.model.Part;
-import com.back.model.RepairOrder;
-import com.back.model.Technician;
+import com.back.dto.PartOrderDTO;
+import com.back.dto.RepairOrderDTO;
+import com.back.model.*;
 import com.back.model.enums.MachineStatus;
 import com.back.model.enums.RepairOrderStatus;
 import com.back.service.Parser;
@@ -18,6 +17,9 @@ public class Inputs {
     Scanner scan = new Scanner(System.in);
 
     public Machine signMachine(){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
         System.out.print("\nWhat is the name of the machine?\n-> ");
         String name = scan.nextLine();
 
@@ -28,6 +30,9 @@ public class Inputs {
     }
 
     public Technician signTechnician(){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
         System.out.print("\nWhat is the name of the technician?\n-> ");
         String name = scan.nextLine();
 
@@ -38,6 +43,9 @@ public class Inputs {
     }
 
     public Part signPart(){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
         System.out.print("\nWhat is the name of the part?\n-> ");
         String name = scan.nextLine();
 
@@ -48,6 +56,9 @@ public class Inputs {
     }
 
     public RepairOrder createRepairOrder(List<Machine> machines, List<Technician> technicians){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
         Lists.operatingMachines(machines);
 
         System.out.print("\nWhat machine would you like to choose?\n-> ");
@@ -64,6 +75,43 @@ public class Inputs {
                 Parser.parseInput(techChoice),
                 solicitationDate,
                 RepairOrderStatus.PENDENT);
+    }
+
+    public PartOrder createPartOrder(List<RepairOrderDTO> reps, List<Part> parts){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
+        Lists.pendentRepairOrders(reps);
+        System.out.print("\nWhich order ID would you like to choose?\n-> ");
+        String orderChoice = scan.nextLine();
+
+        Lists.allParts(parts);
+        System.out.print("\nWhich part ID would you like to choose?\n-> ");
+        String partChoice = scan.nextLine();
+
+        System.out.print("\nHow many of those would you like?\n-> ");
+        String amount = scan.nextLine();
+
+        return new PartOrder(Parser.parseInput(orderChoice),
+                Parser.parseInput(partChoice),
+                Parser.parseDouble(amount));
+    }
+
+    public Character addAnotherPart(){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
+        System.out.print("\nWould you like to add another part?\nIf yes, do not place the same IDs that you had put before for the two respective entries\n(y/*) ->");
+        return scan.next().charAt(0);
+    }
+
+    public int startRepair(List<PartOrderDTO> parts){
+        MainView.printCaseNotWorking();
+        scan.nextLine();
+
+        Lists.pendentAndStorageParts(parts);
+        System.out.print("\nWhich order would you like to execute?\n-> ");
+        return scan.nextInt();
     }
 
 }

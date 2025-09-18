@@ -24,4 +24,8 @@ public class MainView {
         System.out.print(message);
     }
 
+    public static void printCaseNotWorking(){
+        System.out.print("\033[1;90m If nothing happens, press 'enter' to continue!\n \033[0m");
+    }
+
 }

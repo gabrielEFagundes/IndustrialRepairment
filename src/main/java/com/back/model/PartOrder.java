@@ -2,30 +2,30 @@ package com.back.model;
 
 public class PartOrder {
 
-    private RepairOrder idOrder;
-    private Part idPart;
+    private int idOrder;
+    private int idPart;
     private double amount;
 
-    public PartOrder(RepairOrder idOrder, Part idPart, double amount) {
+    public PartOrder(int idOrder, int idPart, double amount) {
         this.idOrder = idOrder;
         this.idPart = idPart;
         this.amount = amount;
     }
 
-    public RepairOrder getIdOrder() {
+    public int getIdOrder() {
         return idOrder;
     }
 
-    public void setIdOrder(RepairOrder idOrder) {
+    public void setIdOrder(int idOrder) {
         this.idOrder = idOrder;
     }
 
-    public Part getIdPart() {
+    public int getIdPart() {
         return idPart;
     }
 
     public void setIdPart(Part idPart) {
-        this.idPart = idPart;
+        this.idPart = idPart.getId();
     }
 
     public double getAmount() {

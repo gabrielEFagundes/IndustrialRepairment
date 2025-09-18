@@ -1,6 +1,9 @@
 package com.back.service;
 
+import com.back.dto.PartOrderDTO;
+import com.back.dto.RepairOrderDTO;
 import com.back.model.Machine;
+import com.back.model.Part;
 import com.back.model.Technician;
 import com.back.view.ValidationMessages;
 
@@ -45,6 +48,47 @@ public class ValidateInputs {
             }
         }
         ValidationMessages.errorNotFound();
+        return false;
+    }
+
+    public static boolean validateRepairChoice(List<RepairOrderDTO> reps, int choice){
+        for(RepairOrderDTO i : reps){
+            if(choice == i.getId()){
+                return true;
+            }
+        }
+        ValidationMessages.errorNotFound();
+        return false;
+    }
+
+    public static boolean validatePartChoice(List<Part> parts, int choice){
+        for(Part i : parts){
+            if(choice == i.getId()){
+                return true;
+            }
+        }
+        ValidationMessages.errorNotFound();
+        return false;
+    }
+
+    public static boolean validateMoreParts(Character choice){
+        return choice.toString().equalsIgnoreCase("y");
+    }
+
+    public static boolean validateStorage(List<PartOrderDTO> parts, int choice){
+        boolean found = false;
+        for(PartOrderDTO i : parts) {
+            if (choice == i.getRepId()) {
+                found = true;
+                if(i.getStorage() >= i.getAmount()){
+                    ValidationMessages.enoughStorage();
+                    return true;
+                }
+            }
+        }
+        if(!found){
+            ValidationMessages.errorNotFound();
+        }
         return false;
     }
 }

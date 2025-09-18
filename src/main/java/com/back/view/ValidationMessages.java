@@ -6,24 +6,28 @@ public class ValidationMessages {
 
     // success
     public static String successDatabase(){
-        return GREEN + "\nAction on database successfully done!\n" + RESET;
+        return GREEN + "\nAction on database successfully done!" + RESET;
     }
 
     public static void successValidation(){
-        System.out.println(GREEN + "\nSuccessfully passed the validation test!" + RESET);
+        System.out.print(GREEN + "\nSuccessfully passed the validation test!" + RESET);
+    }
+
+    public static void enoughStorage(){
+        System.out.print(GREEN + "\nThere is in fact enough storage!" + RESET);
     }
 
     // errors
     public static void errorNotFound(){
-        System.out.println(RED + "\nError! Could not find your requisition...\n" + RESET);
+        System.out.print(RED + "\nError! Could not find your requisition..." + RESET);
     }
 
     public static void errorConnecting(){
-        System.out.println(RED + "\nError! Could not connectate to the Database, nothing was changed.\n" + RESET);
+        System.out.print(RED + "\nError! Could not connectate to the Database, nothing was changed.\nThe error is the following:" + RESET);
     }
 
     public static void errorValidation(){
-        System.out.println(RED + "\nError! Can't allow any null / empty entries on the database!\n" + RESET);
+        System.out.print(RED + "\nError! Can't allow any null / empty entries on the database!" + RESET);
     }
 
     public static String errorDatabase(){
@@ -31,7 +35,11 @@ public class ValidationMessages {
     }
 
     public static void errorLessThanZero(){
-        System.out.println(RED + "\nError! Can't allow values that are below zero on one of the entries!" + RESET);
+        System.out.print(RED + "\nError! Can't allow values that are below zero on one of the entries!" + RESET);
+    }
+
+    public static void notEnoughStorage(){
+        System.out.print(RED + "\nNot enough storage! Aborting the operation...");
     }
 
 }
