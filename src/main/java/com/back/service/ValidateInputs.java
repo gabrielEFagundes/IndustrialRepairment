@@ -75,20 +75,20 @@ public class ValidateInputs {
         return choice.toString().equalsIgnoreCase("y");
     }
 
-    public static boolean validateStorage(List<PartOrderDTO> parts, int choice){
+    public static double validateStorage(List<PartOrderDTO> parts, int choice){
         boolean found = false;
         for(PartOrderDTO i : parts) {
             if (choice == i.getRepId()) {
                 found = true;
                 if(i.getStorage() >= i.getAmount()){
                     ValidationMessages.enoughStorage();
-                    return true;
+                    return i.getAmount();
                 }
             }
         }
         if(!found){
             ValidationMessages.errorNotFound();
         }
-        return false;
+        return 0;
     }
 }

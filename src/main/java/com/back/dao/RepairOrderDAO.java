@@ -70,4 +70,26 @@ public class RepairOrderDAO {
         return repairOrders;
     }
 
+    public boolean updateStatus(int id){
+        String query = """
+                UPDATE repairOrder
+                SET status = 'EXECUTED'
+                WHERE id = ?
+                """;
+
+        try(Connection conn = Connectate.begin();
+            var stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+            return true;
+
+        }catch(SQLException e){
+            ValidationMessages.errorConnecting();
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

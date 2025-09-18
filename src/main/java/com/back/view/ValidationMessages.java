@@ -39,7 +39,7 @@ public class ValidationMessages {
     }
 
     public static void notEnoughStorage(){
-        System.out.print(RED + "\nNot enough storage! Aborting the operation...");
+        System.out.print(RED + "\nNot enough storage! Aborting the operation..." + RESET);
     }
 
 }

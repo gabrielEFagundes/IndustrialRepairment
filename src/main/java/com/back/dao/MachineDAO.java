@@ -61,4 +61,26 @@ public class MachineDAO {
         return machines;
     }
 
+    public boolean updateStatus(int id){
+        String query = """
+                UPDATE machine
+                SET status = 'OPERATIONAL'
+                WHERE id = ?
+                """;
+
+        try(Connection conn = Connectate.begin();
+            var stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+            return true;
+
+        }catch(SQLException e){
+            ValidationMessages.errorConnecting();
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

@@ -16,9 +16,10 @@ public class MainService {
 
     Inputs inputs = new Inputs();
     boolean validation, validStr, validDouble, validTech, validMach,
-            validRepair, validPart, validStorage;
+            validRepair, validPart;
 
     int choiceMach, choiceTech;
+    double validStorage;
 
     Machine machine;
     Technician technician;
@@ -83,7 +84,7 @@ public class MainService {
                 List<RepairOrderDTO> reps = repairOrderDAO.pendentRepairOrders();
                 List<Part> parts = partDAO.allParts();
                 List<PartOrder> partOrders = new ArrayList<>();
-                boolean moreParts = false;
+                boolean moreParts;
 
                 do{
                     partOrder = inputs.createPartOrder(reps, parts);
@@ -105,11 +106,17 @@ public class MainService {
             case 6 -> {
                 List<PartOrderDTO> parts = partOrderDAO.pendentAndStorageParts();
                 int choice = inputs.startRepair(parts);
-                validStr = ValidateInputs.validateStorage(parts, choice);
+                validStorage = ValidateInputs.validateStorage(parts, choice);
 
-                if(validStorage){
-                    partDAO.updatePartStorage();
-                    // logic here (God dayum how do I'm so done DX)
+                if(validStorage != 0){
+                    validPart = partDAO.updatePartStorage(validStorage, choice);
+                    validRepair = repairOrderDAO.updateStatus(choice);
+                    validMach = machineDAO.updateStatus(choice);
+
+                    if(validPart && validRepair && validMach) {
+                        String save = ValidationMessages.successDatabase();
+                        MainView.printMessage(save);
+                    }
                 }else{
                     ValidationMessages.notEnoughStorage();
                 }
