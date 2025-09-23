@@ -13,6 +13,23 @@ import java.util.List;
 
 public class TechinicianDAO {
 
+    public boolean verifyDuplicate(Technician technician) throws SQLException{
+        String query = "SELECT COUNT(0) as line FROM technician WHERE nome = ?";
+
+        try(Connection conn = Connectate.begin();
+            var stmt = conn.prepareStatement(query)){
+
+            stmt.setString(1, technician.getName());
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next() && rs.getInt("line") > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean signTechnician(Technician technician) {
         String query = "INSERT INTO technician (name, specialty) VALUES (?,?)";
 
@@ -21,13 +38,14 @@ public class TechinicianDAO {
 
             stmt.setString(1, technician.getName());
             stmt.setString(2, technician.getSpecialty());
-            stmt.executeUpdate();
 
-            return true;
-
-        }catch(SQLIntegrityConstraintViolationException e){
-            ValidationMessages.duplicateElement();
-            return false;
+            if(!verifyDuplicate(technician)){
+                stmt.executeUpdate();
+                return true;
+            }else{
+                ValidationMessages.duplicateElement();
+                return false;
+            }
 
         }catch(SQLException e){
             ValidationMessages.errorConnecting();

@@ -13,6 +13,23 @@ import java.util.List;
 
 public class PartDAO {
 
+    public boolean verifyDuplicate(Part part) throws SQLException{
+        String query = "SELECT COUNT(0) as line FROM part WHERE nome = ?";
+
+        try(Connection conn = Connectate.begin();
+            var stmt = conn.prepareStatement(query)){
+
+            stmt.setString(1, part.getName());
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next() && rs.getInt("line") > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean signPart(Part part) {
         String query = "INSERT INTO part (name, storage) VALUES (?,?)";
 
@@ -21,9 +38,14 @@ public class PartDAO {
 
             stmt.setString(1, part.getName());
             stmt.setDouble(2, part.getStorage());
-            stmt.executeUpdate();
 
-            return true;
+            if(!verifyDuplicate(part)){
+                stmt.executeUpdate();
+                return true;
+            }else{
+                ValidationMessages.duplicateElement();
+                return false;
+            }
 
         }catch(SQLIntegrityConstraintViolationException e){
             ValidationMessages.duplicateElement();

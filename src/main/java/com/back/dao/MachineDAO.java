@@ -7,11 +7,28 @@ import com.back.view.ValidationMessages;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MachineDAO {
+
+    public boolean verifyDuplicate(Machine machine) throws SQLException{
+        String query = "SELECT COUNT(0) AS line FROM machine WHERE name = ? OR section = ?";
+
+        try(Connection conn = Connectate.begin();
+            var stmt = conn.prepareStatement(query)){
+
+            stmt.setString(1, machine.getName());
+            stmt.setString(2, machine.getSection());
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next() && rs.getInt("line") > 0){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean signMachine(Machine machine) {
         String query = "INSERT INTO machine (name, section, status) VALUES (?,?,?)";
@@ -23,13 +40,13 @@ public class MachineDAO {
             stmt.setString(2, machine.getSection());
             stmt.setString(3, String.valueOf(machine.getStatus()));
 
-            stmt.executeUpdate();
-
-            return true;
-
-        }catch(SQLIntegrityConstraintViolationException e){
-            ValidationMessages.duplicateElement();
-            return false;
+            if(!verifyDuplicate(machine)){
+                stmt.executeUpdate();
+                return true;
+            }else{
+                ValidationMessages.duplicateElement();
+                return false;
+            }
 
         }catch (SQLException e){
             ValidationMessages.errorConnecting();
