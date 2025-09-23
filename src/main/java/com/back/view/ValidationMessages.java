@@ -42,4 +42,8 @@ public class ValidationMessages {
         System.out.print(RED + "\nNot enough storage! Aborting the operation..." + RESET);
     }
 
+    public static void duplicateElement(){
+        System.out.print(RED + "\nDuplicated element detected! Do not create duplicates." + RESET);
+    }
+
 }

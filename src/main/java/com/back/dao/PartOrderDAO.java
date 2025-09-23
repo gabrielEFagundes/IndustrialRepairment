@@ -33,6 +33,10 @@ public class PartOrderDAO {
                     return true;
                 }
 
+            }catch(SQLIntegrityConstraintViolationException e) {
+                ValidationMessages.duplicateElement();
+                return false;
+
             }catch(SQLException e){
                 ValidationMessages.errorConnecting();
                 e.printStackTrace();

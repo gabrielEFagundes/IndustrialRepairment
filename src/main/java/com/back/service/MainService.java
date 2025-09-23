@@ -97,7 +97,7 @@ public class MainService {
 
                     moreParts = ValidateInputsAuxilier.validateMoreParts(inputs.addAnotherPart());
 
-                }while((!validRepair || !validPart || !validDouble) || moreParts);
+                }while((!validRepair && !validPart && !validDouble) || moreParts);
 
                 String save = partOrderDAO.signPartOrders(partOrders, partOrder) ? ValidationMessages.successDatabase() : ValidationMessages.errorDatabase();
                 MainView.printMessage(save);

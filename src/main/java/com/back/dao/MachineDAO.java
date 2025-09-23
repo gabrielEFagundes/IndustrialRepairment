@@ -7,17 +7,17 @@ import com.back.view.ValidationMessages;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MachineDAO {
 
-    // verification method later!!
-    public boolean signMachine(Machine machine){
+    public boolean signMachine(Machine machine) {
         String query = "INSERT INTO machine (name, section, status) VALUES (?,?,?)";
 
-        try(Connection conn = Connectate.begin();
-            var stmt = conn.prepareStatement(query)){
+        try (Connection conn = Connectate.begin();
+             var stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, machine.getName());
             stmt.setString(2, machine.getSection());
@@ -26,6 +26,10 @@ public class MachineDAO {
             stmt.executeUpdate();
 
             return true;
+
+        }catch(SQLIntegrityConstraintViolationException e){
+            ValidationMessages.duplicateElement();
+            return false;
 
         }catch (SQLException e){
             ValidationMessages.errorConnecting();

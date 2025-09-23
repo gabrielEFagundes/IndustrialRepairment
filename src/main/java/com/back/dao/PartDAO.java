@@ -7,23 +7,27 @@ import com.back.view.ValidationMessages;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PartDAO {
 
-    // don't forget to also add a duplicate thingy in here
-    public boolean signPart(Part part){
+    public boolean signPart(Part part) {
         String query = "INSERT INTO part (name, storage) VALUES (?,?)";
 
-        try(Connection conn = Connectate.begin();
-            var stmt = conn.prepareStatement(query)){
+        try (Connection conn = Connectate.begin();
+             var stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, part.getName());
             stmt.setDouble(2, part.getStorage());
             stmt.executeUpdate();
 
             return true;
+
+        }catch(SQLIntegrityConstraintViolationException e){
+            ValidationMessages.duplicateElement();
+            return false;
 
         }catch(SQLException e){
             ValidationMessages.errorConnecting();

@@ -7,23 +7,27 @@ import com.back.view.ValidationMessages;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TechinicianDAO {
 
-    // also need to add the verification of duplicates!!
-    public boolean signTechnician(Technician technician){
+    public boolean signTechnician(Technician technician) {
         String query = "INSERT INTO technician (name, specialty) VALUES (?,?)";
 
-        try(Connection conn = Connectate.begin();
-            var stmt = conn.prepareStatement(query)){
+        try (Connection conn = Connectate.begin();
+             var stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, technician.getName());
             stmt.setString(2, technician.getSpecialty());
             stmt.executeUpdate();
 
             return true;
+
+        }catch(SQLIntegrityConstraintViolationException e){
+            ValidationMessages.duplicateElement();
+            return false;
 
         }catch(SQLException e){
             ValidationMessages.errorConnecting();

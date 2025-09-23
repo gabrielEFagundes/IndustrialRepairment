@@ -5,20 +5,17 @@ import com.back.model.RepairOrder;
 import com.back.util.Connectate;
 import com.back.view.ValidationMessages;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RepairOrderDAO {
 
-    public boolean createRepairOrder(RepairOrder repairOrder){
+    public boolean createRepairOrder(RepairOrder repairOrder) {
         String query = "INSERT INTO repairOrder (idMachine, idTechnician, dateSolicitation, status) VALUES (?,?,?,?)";
 
-        try(Connection conn = Connectate.begin();
-            var stmt = conn.prepareStatement(query)){
+        try (Connection conn = Connectate.begin();
+             var stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, repairOrder.getIdMachine());
             stmt.setInt(2, repairOrder.getIdTechnician());
@@ -27,6 +24,10 @@ public class RepairOrderDAO {
             stmt.executeUpdate();
 
             return true;
+
+        }catch(SQLIntegrityConstraintViolationException e){
+            ValidationMessages.duplicateElement();
+            return false;
 
         }catch(SQLException e){
             ValidationMessages.errorConnecting();
