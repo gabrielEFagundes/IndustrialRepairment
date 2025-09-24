@@ -12,7 +12,7 @@ public class Main {
 
         while(true){
             String choice = view.mainMenu();
-
+            
             int numberedChoice = ParserAuxilier.parseInput(choice);
 
             service.programMenu(numberedChoice);

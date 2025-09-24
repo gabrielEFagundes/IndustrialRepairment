@@ -82,7 +82,7 @@ public class MachineDAO {
         return machines;
     }
 
-    public boolean updateStatus(int id){
+    public boolean updateStatusToOperational(int id){
         String query = """
                 UPDATE machine
                 SET status = 'OPERATIONAL'
@@ -101,6 +101,25 @@ public class MachineDAO {
             ValidationMessages.errorConnecting();
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void updateStatusToInRepair(int id){
+        String query = """
+                UPDATE machine
+                SET status = 'IN_REPAIR'
+                WHERE id = ?
+                """;
+
+        try(Connection conn = Connectate.begin();
+            var stmt = conn.prepareStatement(query)){
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+        }catch(SQLException e){
+            ValidationMessages.errorConnecting();
+            e.printStackTrace();
         }
     }
 
