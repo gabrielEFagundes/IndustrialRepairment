@@ -149,11 +149,10 @@ public class MainService {
                         validRepair = repairOrderDAO.updateStatus(choice);
                         validMach = machineDAO.updateStatusToOperational(choice);
 
-                        conn.commit();
-
                         if (validPart && validRepair && validMach) {
                             String save = ValidationMessages.successDatabase();
                             MainView.printMessage(save);
+                            conn.commit();
                         }
                     }catch(SQLException e){
                         try{
