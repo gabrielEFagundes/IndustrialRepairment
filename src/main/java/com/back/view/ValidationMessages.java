@@ -2,7 +2,7 @@ package com.back.view;
 
 public class ValidationMessages {
 
-    public static final String RESET = "\033[0m", RED = "\033[1;31m", GREEN = "\033[1;32m";
+    public static final String RESET = "\033[0m", RED = "\033[1;31m", GREEN = "\033[1;32m", GRAY = "\033[1;37m";
 
     // success
     public static String successDatabase(){
@@ -44,6 +44,10 @@ public class ValidationMessages {
 
     public static void duplicateElement(){
         System.out.print(RED + "\nDuplicated element detected! Do not create duplicates." + RESET);
+    }
+
+    public static String errorNothingSigned(){
+        return GRAY + "You don't have any of this category signed!" + RESET;
     }
 
 }

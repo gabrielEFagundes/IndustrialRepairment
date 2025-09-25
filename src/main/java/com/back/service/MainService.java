@@ -75,16 +75,17 @@ public class MainService {
                 List<Technician> technicians = techinicianDAO.allTechnicians();
                 int savedId = 0;
 
-                do {
-                    repairOrder = inputs.createRepairOrder(machines, technicians);
-                    validMach = ValidateInputsAuxilier.validateMachineChoice(machines, repairOrder.getIdMachine());
-                    validTech = ValidateInputsAuxilier.validateTechnicianChoice(technicians, repairOrder.getIdTechnician());
+                repairOrder = inputs.createRepairOrder(machines, technicians);
+                validMach = ValidateInputsAuxilier.validateMachineChoice(machines, repairOrder.getIdMachine());
+                validTech = ValidateInputsAuxilier.validateTechnicianChoice(technicians, repairOrder.getIdTechnician());
 
-                    if(validMach && validTech){
-                        savedId = repairOrder.getIdMachine();
-                    }
-
-                }while(!validMach || !validTech);
+                if(validMach && validTech){
+                    savedId = repairOrder.getIdMachine();
+                }
+                if(!validTech || !validMach){
+                    ValidationMessages.errorValidation();
+                    break;
+                }
 
                 try {
                     conn = Connectate.begin();
@@ -139,7 +140,7 @@ public class MainService {
                 int choice = inputs.startRepair(parts);
                 validStorage = ValidateInputsAuxilier.validateStorage(parts, choice);
 
-                if(validStorage != 0){
+                if(validStorage > -1){
 
                     try {
                         conn = Connectate.begin();

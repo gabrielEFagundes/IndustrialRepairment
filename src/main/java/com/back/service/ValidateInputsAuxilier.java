@@ -89,6 +89,6 @@ public class ValidateInputsAuxilier {
         if(!found){
             ValidationMessages.errorNotFound();
         }
-        return 0;
+        return -1;
     }
 }
